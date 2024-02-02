@@ -10,7 +10,7 @@ const io = socketIO(server);
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-// Store messages in memory (for simplicity, not recommended for production)
+// Store messages in memory not persistant solution
 const messages = [];
 
 // Socket.IO connection handling
