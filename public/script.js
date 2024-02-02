@@ -1,8 +1,12 @@
+// public/script.js
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
+    let userId;
   
     // Display existing messages
     socket.on('messageHistory', (data) => {
+      userId = data.userId;
+  
       const messageList = document.getElementById('message-list');
       data.messages.forEach((message) => {
         const listItem = document.createElement('li');
@@ -24,11 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to send a new message
     window.sendMessage = () => {
       const inputElement = document.getElementById('message-input');
-      const message = inputElement.value.trim();
+      const messageText = inputElement.value.trim();
   
-      if (message !== '') {
-        socket.emit('sendMessage', { userId: 'someUserId', text: message }); // You might want to replace 'someUserId' with the actual user ID.
+      if (messageText !== '') {
+        const messageData = { text: messageText };
+        socket.emit('sendMessage', messageData);
         inputElement.value = '';
       }
     };
-});
+  });
+  
