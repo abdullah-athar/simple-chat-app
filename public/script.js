@@ -2,11 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
   
     // Display existing messages
-    socket.on('messageHistory', (messages) => {
+    socket.on('messageHistory', (data) => {
       const messageList = document.getElementById('message-list');
-      messages.forEach((message) => {
+      data.messages.forEach((message) => {
         const listItem = document.createElement('li');
-        listItem.textContent = message;
+        listItem.textContent = `${message.userId}: ${message.text}`;
+        listItem.style.color = message.color;
         messageList.appendChild(listItem);
       });
     });
@@ -15,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('newMessage', (message) => {
       const messageList = document.getElementById('message-list');
       const listItem = document.createElement('li');
-      listItem.textContent = message;
+      listItem.textContent = `${message.userId}: ${message.text}`;
+      listItem.style.color = message.color;
       messageList.appendChild(listItem);
     });
   
@@ -25,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const message = inputElement.value.trim();
   
       if (message !== '') {
-        socket.emit('sendMessage', message);
+        socket.emit('sendMessage', { userId: 'someUserId', text: message }); // You might want to replace 'someUserId' with the actual user ID.
         inputElement.value = '';
       }
     };
-  });
-  
+});
